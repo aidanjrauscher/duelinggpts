@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+    @apply bg-chatgpt-black;
+}
+
+/* STYLING FOR CHAT ROWS */
+.chat-log > .chat-message:nth-child(even) {
+    @apply bg-chatgpt-grey-dark;
+}
+.chat-log > .chat-message:nth-child(odd){
+    @apply bg-chatgpt-grey-light;
+}
+
+
+.chat-log .chat-message:nth-child(even) .chat-icon{
+    @apply text-chatgpt-red rotate-180 
+}
+.chat-log .chat-message:nth-child(odd)  .chat-icon{
+    @apply text-chatgpt-blue;
+}
+
+.chat-log .chat-message:first-child  .chat-icon{
+    @apply text-chatgpt-green
+}
+
+.chat-log .chat-message:nth-child(even) .chat-row{
+    @apply flex-row-reverse text-right;
+}
