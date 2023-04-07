@@ -5,7 +5,6 @@ import { data } from "autoprefixer";
 
 export default async function handler(req,res){
     const { msg, openApiKey, tokens, msgNum,  parentMessageId} = req.body
-    console.log("new request")
     const dataObj = {}
     dataObj.done = false
     try {

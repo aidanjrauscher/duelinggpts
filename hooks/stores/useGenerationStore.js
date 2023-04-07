@@ -5,9 +5,10 @@ const useGenerationStore = create((set)=>({
     updateInitialPrompt: (prompt)=>set({initialPrompt: prompt}),
     isGenerating: false,
     startGenerating: ()=>set({isGenerating:true}),
-    doneGenerating: ()=>set({isGenerating:false}),
+    stopGenerating: ()=>set({isGenerating:false}),
     chatHistory: [],
-    updateChatHistory: (chat)=>set({chatHistory: chat}),
+    appendChatHistory: (chat) => set((state) => ({ chatHistory: [...state.chatHistory, chat] })),
+    clearChatHistory: ()=>set({chatHistory: []}),
     newChat: "",
     updateNewChat: (chat)=>set({newChat: chat})
 }))

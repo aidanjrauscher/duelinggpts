@@ -8,9 +8,8 @@ export default function Chat(){
     const {
         isGenerating, 
         startGenerating, 
-        doneGenerating, 
+        stopGenerating, 
         chatHistory, 
-        updateChatHistory,
         newChat
     } = useGenerationStore()
 
@@ -19,25 +18,18 @@ export default function Chat(){
 
 
     useEffect(()=>{
-        console.log("chathistory changed")
-
         const numMsg = chatHistory.length
-        startGenerating()
-
-        const handleGenerateMessage = async ()=>{
-            generateMessage()
-        }
         //first ai-generated message
         if(numMsg==1 && chatHistory[0]?.agent=="user"){
-            handleGenerateMessage()
+            startGenerating()
+            generateMessage()
+        }   
+        if(isGenerating && numMsg>1 && chatHistory[numMsg-1].parentMessageId){
+            generateMessage()
         }
-        if(numMsg>1 && chatHistory[numMsg-1].done){
-            handleGenerateMessage()
-        }
-    }, [chatHistory, updateChatHistory])
+    }, [chatHistory])
 
-     const data = [,"hello","hello","hello","hello", "hiwngwoengafhuhdhequshfwgwgvwubEUIVBUIEWBVUIW   EBVIU   WEBVUIBWEVIU    BWEIUVBUWIEBVIUWEBVIUWEBVWIUBSiuvbwiuvb iuwbviuwrbiuvbweiuVB    IWRUVB  WIUVBWIyfhghqwsfguiwshgcubcqwucbquiwehuihquhcbuiwchbuiewchgioj wnego   sfhugr2 g   4hefuh  2h  norjgn  2oengf  oj2ewnf oejdioqwhjdofeoiqfjhiwngwoengafhuhdhequshfwgwgvwubEUIVBUIEWBVUIW   EBVIU   WEBVUIBWEVIU    BWEIUVBUWIEBVIUWEBVIUWEBVWIUBSiuvbwiuvb iuwbviuwrbiuvbweiuVB    IWRUVB  WIUVBWIyfhghqwsfguiwshgcubcqwucbquiwehuihquhcbuiwchbuiewchgioj wnego   sfhugr2 g   4hefuh  2h  norjgn  2oengf  oj2ewnf oejdioqwhjdofeoiqfj", "hi", "hi", "hello","hi", "hi", "hi", "hello","hi", "hi", "hi", "hello","hi", "hi", "hi", "hello","hi", "hi", "hi", "hello","hi", "hi", "hi", "hello","hi", "hi", "hi", "hello","hi", "hi", "hi", "hello"]
-     return(
+    return(
         <div 
             className="chat-log flex flex-col justify-bottom w-screen h-full overflow-x-hidden overflow-y-scroll items-center 
             scrollbar-thin scrollbar-thumb-chatgpt-white scrollbar-track-chatgpt-black scrollbar-rounded-md"
