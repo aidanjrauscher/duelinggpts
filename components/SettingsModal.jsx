@@ -63,7 +63,7 @@ export default function SettingsModal(){
                         <input
                             placeholder="Token count..."
                             value={maxTokens}
-                            onChange={(e)=>{updateMaxTokens(e.target.value)}}
+                            onChange={(e)=>{updateMaxTokens(/^([0-9]+|[^.-]*)$/.test(e.target.value) && Number(e.target.value)>0 && Number(e.target.value)<1001  ? Number(e.target.value) : 250)}}
                             className="bg-chatpgt-text shadow-sm shadow-chatgpt-black h-10 w-[70vw] rounded-md p-1 focus:outline-chatgpt-grey-light text-chatgpt-text"
                         />
                     </div>

@@ -7,7 +7,17 @@ import useGenerationStore from "@/hooks/stores/useGenerationStore"
 export default function Prompt(){
 
     const {openSettingsModal, openApiKey} = useSettingsStore()
-    const {initialPrompt, updateInitialPrompt, appendChatHistory,clearChatHistory,isGenerating, chatHistory, stopGenerating} = useGenerationStore()
+    const {
+            initialPrompt, 
+            updateInitialPrompt, 
+            appendChatHistory,
+            clearChatHistory,
+            isChatting, 
+            chatHistory, 
+            stopChatting,
+            updateNewChat,
+            isGenerating
+        } = useGenerationStore()
 
     const handleEnterPress = (event) => {
         if(event.key === 'Enter'){
@@ -54,12 +64,12 @@ export default function Prompt(){
                     className="hover:opacity-75 hover:cursor-pointer"/>
             </div>
             <button 
-                onClick={isGenerating ? ()=>{stopGenerating()} : ()=>{clearChatHistory([])}}
-                disabled = {!isGenerating && chatHistory.length==0}
+                onClick={isChatting ? ()=>{stopChatting();updateNewChat("")} : ()=>{clearChatHistory();updateNewChat("")}}
+                disabled = {!isChatting && isGenerating || chatHistory.length==0}
                 className={`text-chatgpt-white font-semibold bg-chatgpt-red px-6 py-2 rounded-md shadow-md shadow-chatgpt-black  first-letter first-letter first-letter
-                ${isGenerating || chatHistory.length!=0 ? "hover:shadow-none hover:opacity-75 focus:shadow-none" : "bg-opacity-75 cursor-default"}`}
+                ${isChatting || !isGenerating || chatHistory.length!=0 ? "hover:shadow-none hover:opacity-75 focus:shadow-none" : "bg-opacity-75 cursor-default"}`}
             >
-                {isGenerating ? "Stop" : "Clear"}
+                {isChatting ? "Stop" : "Clear"}
             </button>
         </div>
     )

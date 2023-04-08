@@ -4,7 +4,7 @@ import useGenerationStore from './useGenerationStore';
 
 export default function useGenerateMessage(){
     
-    const {chatHistory, appendChatHistory, updateNewChat} = useGenerationStore()
+    const {chatHistory, appendChatHistory, updateNewChat, isGenerating, stopGenerating, startGenerating} = useGenerationStore()
     const {openApiKey, maxTokens} = useSettingsStore()
 
     const generateMessage = async()=>{
@@ -13,7 +13,7 @@ export default function useGenerateMessage(){
             const message = chatHistory[msgNum-1].message
             const parentMessageId = msgNum>2 ? chatHistory[msgNum-2] : null
             const currChatHistory = chatHistory
-            await fetchEventSource("/api/generate", {
+            const eventSource = fetchEventSource("/api/generate", {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json"
@@ -27,6 +27,7 @@ export default function useGenerateMessage(){
 
                 }),
                 onmessage: async (stream)=>{
+                    startGenerating()
                     const data = JSON.parse(stream.data)
                     if (data.done){
                         const newMessage = {
@@ -37,6 +38,7 @@ export default function useGenerateMessage(){
                         // currChatHistory.push(newMessage)
                         updateNewChat("")
                         appendChatHistory(newMessage)
+                        stopGenerating()
                     } else{
                         updateNewChat(data.msg)
                     }

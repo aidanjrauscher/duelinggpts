@@ -1,31 +1,34 @@
 import useGenerateMessage from "@/hooks/stores/useGenerateMessage"
 import useGenerationStore from "@/hooks/stores/useGenerationStore"
-import useSettingsStore from "@/hooks/stores/useSettingsStore"
 import { useEffect } from "react"
 import {MdArrowForwardIos} from "react-icons/md"
 
 export default function Chat(){
     const {
-        isGenerating, 
-        startGenerating, 
-        stopGenerating, 
+        isChatting, 
+        startChatting, 
         chatHistory, 
-        newChat
+        newChat,
+        isGenerating
     } = useGenerationStore()
-
-    const {openApiKey, maxTokens} = useSettingsStore()
     const generateMessage = useGenerateMessage()
 
 
     useEffect(()=>{
         const numMsg = chatHistory.length
         //first ai-generated message
+        const handleGenerateMessage = async ()=>{
+            startChatting()
+            console.log(isChatting)
+            generateMessage()
+
+        }
+
         if(numMsg==1 && chatHistory[0]?.agent=="user"){
-            startGenerating()
-            generateMessage()
+            handleGenerateMessage()
         }   
-        if(isGenerating && numMsg>1 && chatHistory[numMsg-1].parentMessageId){
-            generateMessage()
+        if(isChatting && numMsg>1 && chatHistory[numMsg-1].parentMessageId){
+            handleGenerateMessage()
         }
     }, [chatHistory])
 
@@ -44,11 +47,11 @@ export default function Chat(){
                 </div>
             ))}
             {newChat &&
-                <div key={Math.random()} className="chat-message w-full text-chatgpt-white">
+                <div className="chat-message w-full text-chatgpt-white">
                     <div className="chat-row flex flex-row justify-start w-screen min-h-[2rem] h-min py-2 gap-2 items-start border-b-[1px] border-chatgpt-black px-2">
                         <MdArrowForwardIos size="20" className="chat-icon flex-none"/>
                         {/* ADD CONTENT AND AGENT NAME */}
-                        <p className="text-md">{newChat}</p>
+                        <span className="text-md">{newChat}</span>
                     </div>
                 </div>
             }

@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>DuelingGPTs</title>
+        <title>TalkingGPTs</title>
         <meta name="description" content="ChatGPT vs ChatGPT" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
