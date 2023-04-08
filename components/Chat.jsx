@@ -19,7 +19,6 @@ export default function Chat(){
         //first ai-generated message
         const handleGenerateMessage = async ()=>{
             startChatting()
-            console.log(isChatting)
             generateMessage()
 
         }

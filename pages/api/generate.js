@@ -13,7 +13,7 @@ export default async function handler(req,res){
         let currAgent
         let currParentMessageId
         let currPrompt
-
+        console.log(parentMessageId)
         //initial user from message
         if(msgNum == 1){
             currAgent = "user"
@@ -28,12 +28,12 @@ export default async function handler(req,res){
         else if(msgNum%2==0){ //chatgpt agent two
             currAgent = "two"
             currParentMessageId = parentMessageId
-            currPrompt = process.env.PROMPT_FOR_TWO + `'${msg}'`
+            currPrompt = process.env.RESPONSE_PROMPT + `'${msg}'`
         }
         else{ //chatgpt agent one
             currAgent = "one"
             currParentMessageId = parentMessageId
-            currPrompt = process.env.PROMPT_FOR_ONE + `'${msg}'`
+            currPrompt = process.env.RESPONSE_PROMPT + `'${msg}'`
         }
         const chatgpt = await createChatGptAgent(openApiKey, tokens)
         if(!chatgpt){ throw new Error("Failed to create instance of ChatGPT")}
@@ -58,7 +58,7 @@ export default async function handler(req,res){
         };
 
         //generate response
-        const response = await sendMessage(chatgpt, currPrompt , parentMessageId, streamHandler)
+        const response = await sendMessage(chatgpt, currPrompt , currParentMessageId, streamHandler)
 
         dataObj.parentMessageId = response.parentMessageId
     } catch (err) {

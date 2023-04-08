@@ -11,7 +11,7 @@ export default function useGenerateMessage(){
         const msgNum = chatHistory?.length
         if(msgNum && msgNum>0){
             const message = chatHistory[msgNum-1].message
-            const parentMessageId = msgNum>2 ? chatHistory[msgNum-2] : null
+            const parentMessageId = msgNum>2 ? chatHistory[msgNum-2].parentMessageId : null
             const currChatHistory = chatHistory
             const eventSource = fetchEventSource("/api/generate", {
                 method: 'POST',
